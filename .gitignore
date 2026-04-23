@@ -1,0 +1,24 @@
+# Visual Studio
+.vs/
+
+# Build
+bin/
+obj/
+
+# User files
+*.user
+*.suo
+
+# Temp
+*.tmp
+*.bak
+
+# Logs
+*.log
+
+# Secrets
+secrets.json
+
+# OS
+.DS_Store
+Thumbs.db

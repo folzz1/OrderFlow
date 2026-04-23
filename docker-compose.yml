@@ -1,0 +1,29 @@
+﻿version: '3.9'
+
+services:
+  orderflowapi:
+    build:
+      context: .
+      dockerfile: OrderFlowApi/Dockerfile
+    container_name: orderflow-api
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=OrderFlowDb;User Id=sa;Password=StrongPass123!;TrustServerCertificate=True;"
+    depends_on:
+      - sqlserver
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: orderflow-sql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "StrongPass123!"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+volumes:
+  sql_data:
