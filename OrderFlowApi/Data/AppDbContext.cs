@@ -13,6 +13,7 @@ namespace OrderFlowApi.Data
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<Product> Products => Set<Product>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,6 +21,10 @@ namespace OrderFlowApi.Data
 
             modelBuilder.Entity<Customer>()
                 .HasIndex(c => c.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Product>()
+                .HasIndex(p => p.Name)
                 .IsUnique();
 
             modelBuilder.Entity<Order>()
@@ -35,7 +40,17 @@ namespace OrderFlowApi.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<OrderItem>()
-                .Property(i => i.Price)
+                .HasOne(i => i.Product)
+                .WithMany(p => p.OrderItems)
+                .HasForeignKey(i => i.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<OrderItem>()
+                .Property(i => i.PriceAtPurchase)
                 .HasColumnType("decimal(18,2)");
         }
     }

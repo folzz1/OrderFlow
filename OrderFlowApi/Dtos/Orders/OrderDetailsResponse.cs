@@ -1,6 +1,6 @@
 ﻿namespace OrderFlowApi.Dtos.Orders
 {
-    public class CreateOrderRequest
+    public class OrderDetailsResponse
     {
     }
 }
